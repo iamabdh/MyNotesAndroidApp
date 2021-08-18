@@ -1,13 +1,29 @@
 package com.example.mynotes
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_home_page.*
+import kotlinx.android.synthetic.main.fragment_home_page.view.*
+import java.lang.Exception
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,6 +40,18 @@ class HomePageFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private  var mainActivity : MainActivity = MainActivity()
+
+
+    private var layoutManger : RecyclerView.LayoutManager?=null
+    private var adapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>?=null
+
+//    private lateinit var navController : NavController
+//    private lateinit var drawerLayout : DrawerLayout
+//    private lateinit var appBarConfiguration: AppBarConfiguration
+//    private lateinit var homePageFragment: HomePageFragment
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +59,6 @@ class HomePageFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
-
     }
 
     override fun onCreateView(
@@ -40,8 +66,54 @@ class HomePageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_page, container, false)
+        val view = inflater.inflate(R.layout.fragment_home_page, container, false)
+        val menuButton : ImageButton = view.findViewById(R.id.menuButton)
+        val floatingButton : FloatingActionButton = view.findViewById(R.id.floatingActionButton)
+
+
+        // for navigation
+//        navController = mainActivity.findNavController(R.id.fragment)
+//        drawerLayout = view.findViewById(R.id.drawer_layout)
+//        navigationView.setupWithNavController(navController)
+//        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+//
+
+
+        floatingButton.setOnClickListener {
+            try{
+                mainActivity.toCreatePage(view.context)
+            }
+            catch (e : Exception){
+                Toast.makeText(view.context, e.toString(), Toast.LENGTH_LONG).show()
+                Log.d("TAG", "onCreateView", e);
+            }
+        }
+
+        menuButton.setOnClickListener {
+            try{
+                mainActivity.onSupportNavigateUp()
+            }
+            catch (e : Exception){
+                Toast.makeText(view.context, e.toString(), Toast.LENGTH_LONG).show()
+                Log.d("TAG", "onCreateView", e);
+            }
+        }
+
+        // read notes from DB
+        var listUser : MutableList<User> = DataBaseHandler(view.context).readData()
+        try {
+            // display notes in card
+            layoutManger = LinearLayoutManager(view.context)
+            view.recyclerView.layoutManager = layoutManger
+            adapter = RecyclerAdapter(view.context, listUser)
+            view.recyclerView.adapter = adapter
+        } catch (e : Exception){
+            Toast.makeText(view.context, e.toString(), Toast.LENGTH_LONG).show()
+            Log.d("TAG", "onCreateView", e);
+        }
+        return view
     }
+
 
     companion object {
         /**

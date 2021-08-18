@@ -2,12 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/homePageFragment"
-            android:title="homePage fragment">
+            android:id="@+id/settingFragment"
+            android:title="Settings">
         </item>
         <item
-            android:id="@+id/settingFragment"
-            android:title="settings fragment">
+            android:id="@+id/darkModeFragment"
+            android:title="Dark Mode">
+        </item>
+        <item
+            android:id="@+id/aboutFragment"
+            android:title="About">
         </item>
     </group>
 </menu>

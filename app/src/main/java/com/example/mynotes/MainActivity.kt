@@ -1,9 +1,13 @@
 package com.example.mynotes
 
+import android.annotation.SuppressLint
+import android.app.FragmentTransaction
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -20,11 +24,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController : NavController
     private lateinit var drawerLayout : DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
-
-    private var layoutManger : RecyclerView.LayoutManager?=null
-    private var adapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>?=null
+    private lateinit var homePageFragment: HomePageFragment
 
 
+
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,28 +36,53 @@ class MainActivity : AppCompatActivity() {
         val floatingButton : FloatingActionButton = findViewById(R.id.floatingActionButton)
         val menuButton : ImageButton = findViewById(R.id.menuButton)
 
+        // for navigation
         navController = findNavController(R.id.fragment)
         drawerLayout = findViewById(R.id.drawer_layout)
         navigationView.setupWithNavController(navController)
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
-
-        var listUser : MutableList<User> = DataBaseHandler(this).readData()
-        layoutManger = LinearLayoutManager(this)
-        recyclerView.layoutManager = layoutManger
-        adapter = RecyclerAdapter(this, listUser)
-        recyclerView.adapter = adapter
 
         menuButton.setOnClickListener {
             onSupportNavigateUp()
         }
 
         floatingButton.setOnClickListener {
-            startActivity(Intent(this, create::class.java))
+            toCreatePage(this)
         }
-
+        homePageFragment = HomePageFragment()
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.frame_layout, homePageFragment)
+                .commit()
+        val settingFragment = SettingFragment()
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.frame_layout, settingFragment)
+                .commit()
+        val darkModeFragment = DarkModeFragment()
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.frame_layout, darkModeFragment)
+                .commit()
+        val aboutFragment = AboutFragment()
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.frame_layout, aboutFragment)
+                .commit()
     }
-    override fun onSupportNavigateUp(): Boolean {
+
+    // open navigation menu
+
+     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.fragment)
         return navController.navigateUp(appBarConfiguration)||super.onSupportNavigateUp()
+    }
+
+     fun getToast(context: Context){
+        Toast.makeText(context, "ssss", Toast.LENGTH_LONG).show()
+    }
+
+     fun toCreatePage(context: Context){
+        startActivity(Intent(context, create::class.java))
     }
 }

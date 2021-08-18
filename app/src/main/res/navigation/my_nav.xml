@@ -15,4 +15,14 @@
         android:name="com.example.mynotes.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/darkModeFragment"
+        android:name="com.example.mynotes.DarkModeFragment"
+        android:label="fragment_dark_mode"
+        tools:layout="@layout/fragment_dark_mode" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.mynotes.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
 </navigation>
