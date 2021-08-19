@@ -24,6 +24,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home_page.*
 import kotlinx.android.synthetic.main.fragment_home_page.view.*
 import java.lang.Exception
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,7 +38,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomePageFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class HomePageFragment : Fragment() {
+class HomePageFragment : Fragment()  {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -46,10 +49,6 @@ class HomePageFragment : Fragment() {
     private var layoutManger : RecyclerView.LayoutManager?=null
     private var adapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>?=null
 
-//    private lateinit var navController : NavController
-//    private lateinit var drawerLayout : DrawerLayout
-//    private lateinit var appBarConfiguration: AppBarConfiguration
-//    private lateinit var homePageFragment: HomePageFragment
 
 
 
@@ -61,58 +60,56 @@ class HomePageFragment : Fragment() {
         }
     }
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home_page, container, false)
-        val menuButton : ImageButton = view.findViewById(R.id.menuButton)
-        val floatingButton : FloatingActionButton = view.findViewById(R.id.floatingActionButton)
-
-
-        // for navigation
-//        navController = mainActivity.findNavController(R.id.fragment)
-//        drawerLayout = view.findViewById(R.id.drawer_layout)
-//        navigationView.setupWithNavController(navController)
-//        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
-//
-
+        val menuButton: ImageButton = view.findViewById(R.id.menuButton)
+        val floatingButton: FloatingActionButton = view.findViewById(R.id.floatingActionButton)
 
         floatingButton.setOnClickListener {
-            try{
-                mainActivity.toCreatePage(view.context)
-            }
-            catch (e : Exception){
+            try {
+                startActivity(Intent(view.context, create::class.java))
+            } catch (e: Exception) {
                 Toast.makeText(view.context, e.toString(), Toast.LENGTH_LONG).show()
                 Log.d("TAG", "onCreateView", e);
             }
         }
 
         menuButton.setOnClickListener {
-            try{
-                mainActivity.onSupportNavigateUp()
-            }
-            catch (e : Exception){
+            try {
+
+            } catch (e: Exception) {
                 Toast.makeText(view.context, e.toString(), Toast.LENGTH_LONG).show()
                 Log.d("TAG", "onCreateView", e);
             }
         }
 
         // read notes from DB
-        var listUser : MutableList<User> = DataBaseHandler(view.context).readData()
+        val listUser: MutableList<User> = DataBaseHandler(view.context).readData()
         try {
             // display notes in card
             layoutManger = LinearLayoutManager(view.context)
             view.recyclerView.layoutManager = layoutManger
             adapter = RecyclerAdapter(view.context, listUser)
             view.recyclerView.adapter = adapter
-        } catch (e : Exception){
+
+
+        } catch (e: Exception) {
             Toast.makeText(view.context, e.toString(), Toast.LENGTH_LONG).show()
             Log.d("TAG", "onCreateView", e);
         }
+
         return view
+
+
     }
+
+
 
 
     companion object {

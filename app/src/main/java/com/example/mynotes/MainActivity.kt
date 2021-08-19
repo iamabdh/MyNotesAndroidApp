@@ -72,17 +72,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     // open navigation menu
-
-     override fun onSupportNavigateUp(): Boolean {
+    override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.fragment)
         return navController.navigateUp(appBarConfiguration)||super.onSupportNavigateUp()
     }
 
-     fun getToast(context: Context){
+    // debug function
+    fun getToast(context: Context){
         Toast.makeText(context, "ssss", Toast.LENGTH_LONG).show()
     }
 
-     fun toCreatePage(context: Context){
+    fun toCreatePage(context: Context){
         startActivity(Intent(context, create::class.java))
+    }
+
+    fun toReatNotePage(context : Context){
+        startActivity(Intent(context, ReadNote::class.java))
     }
 }
