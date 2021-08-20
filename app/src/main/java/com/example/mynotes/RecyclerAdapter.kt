@@ -42,7 +42,6 @@ class RecyclerAdapter(context: Context, private val dataObject : MutableList<Use
         holder.dataDateTime.text = item.dateTime
         holder.dataTime.text = item.time
 
-
     }
 
 
@@ -59,7 +58,9 @@ class RecyclerAdapter(context: Context, private val dataObject : MutableList<Use
             itemView.setOnClickListener{
                 val position : Int = absoluteAdapterPosition
                 try {
-                    itemView.context.startActivity(Intent(itemView.context, ReadNote::class.java))
+                    val intent = Intent(itemView.context, ReadNote::class.java)
+                    intent.putExtra("id", position.toString())
+                    itemView.context.startActivity(intent)
                 } catch (e:Exception){
                     Toast.makeText(itemView.context, e.toString(), Toast.LENGTH_LONG).show()
                 }

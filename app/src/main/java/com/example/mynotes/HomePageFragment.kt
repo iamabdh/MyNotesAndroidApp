@@ -44,13 +44,8 @@ class HomePageFragment : Fragment()  {
     private var param2: String? = null
 
     private  var mainActivity : MainActivity = MainActivity()
-
-
     private var layoutManger : RecyclerView.LayoutManager?=null
     private var adapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>?=null
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +61,9 @@ class HomePageFragment : Fragment()  {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home_page, container, false)
         val menuButton: ImageButton = view.findViewById(R.id.menuButton)
@@ -73,6 +71,7 @@ class HomePageFragment : Fragment()  {
 
         floatingButton.setOnClickListener {
             try {
+
                 startActivity(Intent(view.context, create::class.java))
             } catch (e: Exception) {
                 Toast.makeText(view.context, e.toString(), Toast.LENGTH_LONG).show()
@@ -80,12 +79,14 @@ class HomePageFragment : Fragment()  {
             }
         }
 
+
+
         menuButton.setOnClickListener {
             try {
-
             } catch (e: Exception) {
                 Toast.makeText(view.context, e.toString(), Toast.LENGTH_LONG).show()
                 Log.d("TAG", "onCreateView", e);
+
             }
         }
 
@@ -97,15 +98,12 @@ class HomePageFragment : Fragment()  {
             view.recyclerView.layoutManager = layoutManger
             adapter = RecyclerAdapter(view.context, listUser)
             view.recyclerView.adapter = adapter
-
-
         } catch (e: Exception) {
             Toast.makeText(view.context, e.toString(), Toast.LENGTH_LONG).show()
             Log.d("TAG", "onCreateView", e);
         }
 
         return view
-
 
     }
 
